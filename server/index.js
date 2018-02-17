@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const github = require('../helpers/github.js');
-const save = require('../database/index.js');
+const db = require('../database/index.js');
 let app = express();
 app.use(bodyParser.json());
 
@@ -12,21 +12,16 @@ app.post('/repos', function (req, res) {
   // data is found in the stringify object req.body.term
   // req.body.term is then passed in the function from helpers/github.js
   // which make a get to the github api
-  // then the callback retreive and return an array of object of the username repos
-  // then we loop thru data to get the info needed
-  // data need now to be save in the database
+  // then the callback retreive and return body which is string object
+  // then we JSON.parse into, it's now an array of object of the username
+  // we send this array to the database using save, which is going to process it
   github.getReposByUsername(req.body.term, (error, response, body) => {
     let arr = JSON.parse(body);
-    arr.forEach(data => {
-      save(data.owner.login, data.owner.id, data.url, data.forks);
-      // console.log(data.owner.login);
-      // console.log(data.owner.id);
-      // console.log(data.url);
-      // console.log(data.forks);
+    db.save(arr, (resp) => {
+      res.status(201);
+      res.send();
     });
   });
-  res.status(201);
-  res.send();
 });
 
 app.get('/repos', function (req, res) {
