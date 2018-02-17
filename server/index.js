@@ -18,9 +18,7 @@ app.post('/repos', function (req, res) {
   console.log(' *** Server received data -> Get to api ***', req.body);
 
   github.getReposByUsername(req.body.term, (error, response, body) => {
-    //console.log(response);
     let arr = JSON.parse(body);
-
     if (Array.isArray(arr)) {
       db.save(arr, (resp) => {
         res.status(201);
@@ -31,8 +29,15 @@ app.post('/repos', function (req, res) {
 });
 
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should send back the top 25 repos
+  // retreive data from db calling find from the db
+  // pass the Repos collection, get the data thru the callback
+  // filter it to get the top 25
+  // send data to client (client retreive it thru ajax get)
+  db.find(db.repos, (data) => {
+    var tempArr = data.sort((a, b) => a.forks < b.forks).map(x => x.url);
+    res.status(200);
+    res.send(tempArr);
+  });
 });
 
 let port = 1128;

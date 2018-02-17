@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+// import ReposResult from './components/ReposResult.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,6 +12,16 @@ class App extends React.Component {
       repos: []
     }
   }
+
+componentDidMount() {
+  this.fetch((data) => {
+    console.log("before", data)
+    this.setState({
+      repos: data
+    });
+    console.log("after", this.state.repos);
+  });
+}
 
   search (term) {
     console.log('AJAX POST SENT: ', term);
@@ -28,20 +39,19 @@ class App extends React.Component {
     });
   }
 
-  // retreive () {
-  //   console.log();
-  //   $.ajax({
-  //     method: 'GET',
-  //     url: '/repos',
-  //     data:,
-  //     success: (data) => {
-  //       console.log('DATA RETREIVED', data);
-  //     },
-  //     error: (data) => {
-  //       console.error('FAILED TO RETREIVE DATA', data);
-  //     }
-  //   });
-  // }
+  fetch (callback) {
+    $.ajax({
+      url: '/repos',
+      method:'GET',
+      success: (data) => {
+        console.log('DATA RECEIVED!', data);
+        callback(data);
+      },
+      error: (data) => {
+        console.error('FAILED TO RECEIVED DATA!', data);
+      }
+    });
+  }
 
   render () {
     return (
@@ -49,6 +59,7 @@ class App extends React.Component {
         <h1>Github Fetcher</h1>
         <RepoList repos={this.state.repos}/>
         <Search onSearch={this.search.bind(this)}/>
+        {/* <ReposResult reposresult={this.state.repos} /> */}
       </div>
     );
   }
