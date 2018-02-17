@@ -13,6 +13,7 @@ class App extends React.Component {
   }
 
   search (term) {
+    console.log('AJAX POST SENT: ', term);
     $.ajax({
       method:'POST',
       url:'/repos',
@@ -26,6 +27,21 @@ class App extends React.Component {
       }
     });
   }
+
+  // retreive () {
+  //   console.log();
+  //   $.ajax({
+  //     method: 'GET',
+  //     url: '/repos',
+  //     data:,
+  //     success: (data) => {
+  //       console.log('DATA RETREIVED', data);
+  //     },
+  //     error: (data) => {
+  //       console.error('FAILED TO RETREIVE DATA', data);
+  //     }
+  //   });
+  // }
 
   render () {
     return (

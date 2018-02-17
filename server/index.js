@@ -15,13 +15,19 @@ app.post('/repos', function (req, res) {
   // then the callback retreive and return body which is string object
   // then we JSON.parse into, it's now an array of object of the username
   // we send this array to the database using save, which is going to process it
+  console.log(' *** Server received data -> Get to api ***', req.body);
+
   github.getReposByUsername(req.body.term, (error, response, body) => {
+    //console.log(response);
     let arr = JSON.parse(body);
-    db.save(arr, (resp) => {
-      res.status(201);
-      res.send();
-    });
+
+    if (Array.isArray(arr)) {
+      db.save(arr, (resp) => {
+        res.status(201);
+      });
+    }
   });
+  res.send();
 });
 
 app.get('/repos', function (req, res) {
@@ -32,5 +38,5 @@ app.get('/repos', function (req, res) {
 let port = 1128;
 
 app.listen(port, function() {
-  console.log(`Server listening on port ${port}`);
+  console.log(` *** Server listening on port ${port} ***`);
 });
