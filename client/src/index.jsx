@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
-// import ReposResult from './components/ReposResult.jsx';
+import ReposResult from './components/ReposResult.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,11 +15,9 @@ class App extends React.Component {
 
 componentDidMount() {
   this.fetch((data) => {
-    console.log("before", data)
     this.setState({
       repos: data
     });
-    console.log("after", this.state.repos);
   });
 }
 
@@ -32,6 +30,7 @@ componentDidMount() {
       data: JSON.stringify({term: term}),
       success: (data) => {
         console.log('DATA SENT!', data);
+
       },
       error: (data) => {
         console.error('FAILED TO SEND!', data);
@@ -59,7 +58,7 @@ componentDidMount() {
         <h1>Github Fetcher</h1>
         <RepoList repos={this.state.repos}/>
         <Search onSearch={this.search.bind(this)}/>
-        {/* <ReposResult reposresult={this.state.repos} /> */}
+        <ReposResult reposresult={this.state.repos} />
       </div>
     );
   }

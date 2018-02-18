@@ -1,8 +1,12 @@
 const express = require('express');
+//require bodyparser
 const bodyParser = require('body-parser');
 const github = require('../helpers/github.js');
 const db = require('../database/index.js');
 let app = express();
+
+// bodyparser expect an obj, now we get the property body of
+// request = req.body
 app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -21,11 +25,10 @@ app.post('/repos', function (req, res) {
     let arr = JSON.parse(body);
     if (Array.isArray(arr)) {
       db.save(arr, (resp) => {
-        res.status(201);
       });
     }
   });
-  res.send();
+  res.sendStatus(201);
 });
 
 app.get('/repos', function (req, res) {
@@ -34,7 +37,7 @@ app.get('/repos', function (req, res) {
   // filter it to get the top 25
   // send data to client (client retreive it thru ajax get)
   db.find(db.repos, (data) => {
-    var tempArr = data.sort((a, b) => a.forks < b.forks).map(x => x.url);
+    var tempArr = data.sort((a, b) => a.forks < b.forks);
     res.status(200);
     res.send(tempArr);
   });

@@ -4,7 +4,8 @@ const OneRepo = (props) => (
   <div>
     <ul>
       <li>
-        <p>{props.url}</p>
+        <p>{props.nameUrl.ownerLogin}:</p>
+        <a href={props.nameUrl.url}>{props.nameUrl.url}</a>
       </li>
     </ul>
   </div>

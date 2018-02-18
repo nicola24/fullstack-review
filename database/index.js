@@ -25,7 +25,7 @@ let save = (data, callback) => {
     var newRepo = new Repos({
         ownerLogin: repo.owner.login,
         ownerId: repo.owner.id,
-        url: repo.url,
+        url: repo.html_url,
         forks: repo.forks
     });
 
