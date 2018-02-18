@@ -37,9 +37,13 @@ app.get('/repos', function (req, res) {
   // filter it to get the top 25
   // send data to client (client retreive it thru ajax get)
   db.find(db.repos, (data) => {
+    var result = [];
     var tempArr = data.sort((a, b) => a.forks < b.forks);
+    for (var i = 0; i < 25; i++) {
+      result.push(tempArr[i]);
+    }
     res.status(200);
-    res.send(tempArr);
+    res.send(result);
   });
 });
 

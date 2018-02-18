@@ -30,7 +30,6 @@ componentDidMount() {
       data: JSON.stringify({term: term}),
       success: (data) => {
         console.log('DATA SENT!', data);
-
       },
       error: (data) => {
         console.error('FAILED TO SEND!', data);
