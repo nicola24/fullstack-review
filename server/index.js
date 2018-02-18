@@ -38,7 +38,9 @@ app.get('/repos', function (req, res) {
   // send data to client (client retreive it thru ajax get)
   db.find(db.repos, (data) => {
     var result = [];
+    // sort by amount of forks
     var tempArr = data.sort((a, b) => a.forks < b.forks);
+    // return the top 25 of the array
     for (var i = 0; i < 25; i++) {
       result.push(tempArr[i]);
     }
